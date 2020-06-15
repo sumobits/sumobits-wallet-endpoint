@@ -3,6 +3,7 @@
  */
 import { gql } from 'apollo-server';
 import merge from 'lodash/merge';
+
 import {
 	dataSource as userDataSource,
 	mutations as userMutations,

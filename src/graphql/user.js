@@ -15,25 +15,26 @@ class ApiDataSource extends RESTDataSource {
 		this.baseURL = process.env.HOST_ENDPOINT || 'http://localhost:8888/';
 	}
 
-	getUser = passcode => {
+	getUser = id => {
 		// TODO implement me
 	}
 
-	createUser = passcode => {
+	createUser = id => {
 		// TODO implement me
 	}
 }
 
 class DevDataSource extends DataSource {	
-	getUser = (passcode) => {
-		if (!passcode) {
+	getUser = id => {
+		if (!id) {
 			return;
 		}
 
-		return User; // for now just return the currently stored User
+		const user = User;  // for now just return the currently stored User
+		return JSON.stringify(user);
 	}
 
-	createUser = (passcode) => {
+	createUser = passcode => {
 		if (!passcode) {
 			return;
 		}
@@ -66,7 +67,7 @@ export const typeDefs = `
 `;
 
 export const queries = `
-	getUser(passcode: String!): User
+	getUser(id: String!): User
 `;
 
 export const mutations =`
@@ -75,8 +76,8 @@ export const mutations =`
 
 export const resolvers = {
 	Query: {
-		getUser: async (src, { passcode }, { dataSources }) => {
-			return dataSources.userDataSource.getUser(passcode);
+		getUser: async (src, { id }, { dataSources }) => {
+			return dataSources.userDataSource.getUser(id);
 		},
 	},
 	Mutation: {
@@ -87,11 +88,11 @@ export const resolvers = {
 };
 
 const getDataSource = () => {
-	if (process.env.ENVIRONMENT === 'development') {
-		return new DevDataSource();
+	if ( process.env.ENVIRONMENT === 'production') {
+		return new ApiDataSource();
 	}
 	else {
-		return new ApiDataSource();
+		return new DevDataSource();
 	}
 };
 

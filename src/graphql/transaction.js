@@ -4,12 +4,10 @@
 import { DataSource } from 'apollo-datasource';
 import { RESTDataSource } from 'apollo-datasource-rest';
 import find from 'lodash/find';
-import dotenv from 'dotenv';
 import Locker from '../util/locker';
 
 import { Transactions } from '../data/sample';
 
-dotenv.config();
 
 class ApiDataSource extends RESTDataSource {
 	constructor () {
@@ -98,11 +96,11 @@ export const mutations = `
 `;
 
 const getDataSource = () => {
-	if (process.env.ENVIRONMENT === 'development') {
-		return new DevDataSource();
+	if (process.env.ENVIRONMENT === 'production') {
+		return new ApiDataSource();
 	}
 	else {
-		return new ApiDataSource();
+		return new DevDataSource();
 	}
 };
 

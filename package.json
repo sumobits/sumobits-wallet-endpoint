@@ -6,8 +6,8 @@
   "scripts": {
     "build": "gulp",
     "build-debug": "gulp package-debug",
-    "start": "npx ./dist/index.js",
-    "start-debug": "npx ./dist/index.js --development",
+    "start": "node ./dist/index.js",
+    "start-debug": "node ./dist/index.js",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "mocha test",
