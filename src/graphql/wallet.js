@@ -4,7 +4,7 @@
 import { DataSource } from 'apollo-datasource';
 import { RESTDataSource } from 'apollo-datasource-rest';
 import Locker from '../util/locker';
-import { User } from '../data/sample';
+import { Wallet } from '../data/sample';
 
 class ApiDataSource extends RESTDataSource {
 	constructor () {
@@ -12,63 +12,55 @@ class ApiDataSource extends RESTDataSource {
 		this.baseURL = process.env.HOST_ENDPOINT || 'http://localhost:8888/';
 	}
 
-	getUser = id => {
-		// TODO implement me
-	}
-
-	createUser = id => {
+	createWallet = (userId, passcode, keys) => {
 		// TODO implement me
 	}
 }
 
-class DevDataSource extends DataSource {	
-	getUser = id => {
-		if (!id) {
+class DevDataSource extends DataSource {
+	createWallet = (userId, passcode) => {
+		if (!userId || !passcode) {
 			return;
 		}
 
-		const user = User;  // for now just return the currently stored User
-		return user;
-	}
+		const keys = Locker.generateKeypair(passcode);
+		const addresses = [];
 
-	createUser = passcode => {
-		if (!passcode) {
-			return;
+		for (let x = 0; x < 100; x++) {
+			addresses.push(Logger.generateUniqueId(true));
 		}
 
-		const { 
-			publicKey, 
-			privateKey 
-		} = Locker.generateKeypair(passcode);
-
-		const newUser = {
-			id: Locker.generateUniqueId(false),
-			keys: {
-				public: publicKey,
-				private: privateKey,
-			}
+		const wallet = {
+			id: Locker.generateUniqueId(),
+			userId,
+			lastOpen,
+			keys,
+			addresses,
 		};
 
-		return newUser;
+		return wallet;
+	}
+
+	getWallet = id => {
+		// for now just return the static wallet
+		return Wallet;
 	};
 }
 
 export const typeDefs = `
-	scalar UserKey
-
-    type User {
+    type Wallet {
 		id: String!
-		lastUsage: String
-		keys: [UserKey]	
+		lastOpen: String
+		transactions: [Transsaction]	
 	}
 `;
 
 export const queries = `
-	getUser(id: String!): User
+	getWallet(id: String!): Wallet
 `;
 
-export const mutations =`
-	createUser(passcode: String!): User
+export const mutations = `
+	createWallet(passcode: String!, ): User
 `;
 
 export const resolvers = {
@@ -85,7 +77,7 @@ export const resolvers = {
 };
 
 const getDataSource = () => {
-	if ( process.env.ENVIRONMENT === 'production') {
+	if (process.env.ENVIRONMENT === 'production') {
 		return new ApiDataSource();
 	}
 	else {

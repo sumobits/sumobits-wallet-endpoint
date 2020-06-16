@@ -127,3 +127,9 @@ export const Transactions = [ {
 	sender: '41d63682090d467aa8de16a5d2c012bf',
 	timestamp: '09-06-2020T13:27:06Z',
 } ];
+
+export const Wallet = {
+	id: '4po0f70e-25q5-423b-9d2b-614d5b343c83',
+	userId: '85278381-bfa5-4aff-bee9-641a56eb9571',
+	lastOpened: undefined,
+};
