@@ -18,7 +18,7 @@ class ApiDataSource extends RESTDataSource {
 }
 
 class DevDataSource extends DataSource {
-	createWallet = (passcode) => {
+	createWallet = (userId, passcode) => {
 		if (!userId || !passcode) {
 			return;
 		}
@@ -33,6 +33,7 @@ class DevDataSource extends DataSource {
 		const wallet = {
 			id: Locker.generateUniqueId(),
 			userId,
+			passcode,
 			lastOpen,
 			keys,
 			addresses,
@@ -50,8 +51,10 @@ export const typeDefs = `
     type Wallet {
 		id: String!
 		userId: String!
+		passcode: String!
 		lastOpen: String
-		transactions: [Transaction]!	
+		transactions: [Transaction]!
+		addresses: [String!]!
 	}
 `;
 

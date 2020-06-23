@@ -125,6 +125,7 @@ export const Transactions = [ {
 export const Wallet = {
 	id: '4po0f70e-25q5-423b-9d2b-614d5b343c83',
 	userId: '85278381-bfa5-4aff-bee9-641a56eb9571',
+	passcode,
 	keys,
 	lastOpened: undefined,
 	transactions: [],
