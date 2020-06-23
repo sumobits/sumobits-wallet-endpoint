@@ -18,7 +18,7 @@ class ApiDataSource extends RESTDataSource {
 }
 
 class DevDataSource extends DataSource {
-	createWallet = (userId, passcode) => {
+	createWallet = (passcode) => {
 		if (!userId || !passcode) {
 			return;
 		}
@@ -41,8 +41,7 @@ class DevDataSource extends DataSource {
 		return wallet;
 	}
 
-	getWallet = id => {
-		// for now just return the static wallet
+	getUserWallet = id => {
 		return Wallet;
 	};
 }
@@ -50,28 +49,29 @@ class DevDataSource extends DataSource {
 export const typeDefs = `
     type Wallet {
 		id: String!
+		userId: String!
 		lastOpen: String
-		transactions: [Transsaction]	
+		transactions: [Transaction]!	
 	}
 `;
 
 export const queries = `
-	getWallet(id: String!): Wallet
+	getUserWallet(userId: String!): Wallet
 `;
 
 export const mutations = `
-	createWallet(passcode: String!, ): User
+	createWallet(passcode: String! ): Wallet
 `;
 
 export const resolvers = {
 	Query: {
-		getUser: async (src, { id }, { dataSources }) => {
-			return dataSources.userDataSource.getUser(id);
+		getUserWallet: async (src, { userId }, { dataSources }) => {
+			return dataSources.walletDataSource.getUserWallet(userId);
 		},
 	},
 	Mutation: {
-		createUser: async (src, { passcode }, { dataSources }) => {
-			return dataSources.userDataSource.createUser(passcode);
+		createWallet: async (src, { passcode }, { dataSources }) => {
+			return dataSources.walletDataSource.creatWallet(passcode);
 		}
 	},
 };

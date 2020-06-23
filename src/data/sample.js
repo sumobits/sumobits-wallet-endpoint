@@ -99,12 +99,6 @@ const keys = [ {
 		-----END PGP PUBLIC KEY BLOCK-----`,
 } ];
 
-export const User = {
-	id: '85278381-bfa5-4aff-bee9-641a56eb9571',
-	lastUsage: '2020-06-08T12:41:02Z',
-	keys,
-};
-
 export const Transactions = [ {
 	id: '8d1285af-2b67-4723-b48f-f1b5e5a4c886',
 	amount: 500,
@@ -131,5 +125,7 @@ export const Transactions = [ {
 export const Wallet = {
 	id: '4po0f70e-25q5-423b-9d2b-614d5b343c83',
 	userId: '85278381-bfa5-4aff-bee9-641a56eb9571',
+	keys,
 	lastOpened: undefined,
+	transactions: [],
 };

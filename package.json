@@ -17,7 +17,7 @@
   "repository": "https://github.com/sumobits/sumobits-wallet-endpoint.git",
   "author": "TJ Cook<d0rkish@protonmail.com>",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "dependencies": {
     "apollo-datasource": "^0.7.1",
     "apollo-datasource-rest": "^0.9.2",

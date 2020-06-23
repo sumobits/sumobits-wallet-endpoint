@@ -19,32 +19,6 @@ const server = new ApolloServer({
 	debug: true,
 	introspection: true,
 	playground: true,
-	plugins: [ {
-		didEncounterError (context) {
-			console.error(`didEncounterError: ${JSON.stringify(context)}`);
-		},
-		parsingDidStart (context) {
-			console.debug(`parsingDidStart: ${JSON.stringify(context)}`);
-		},
-		requestDidStart (context) {
-			console.debug(`Request started: ${JSON.stringify(context)}`);
-
-			return {
-				didEncounterError (context) {
-					console.error(`didEncounterError: ${JSON.stringify(context)}`);
-				},
-			};
-		},
-		responseForOperation (context) {
-			console.debug(`responseForOperation: ${JSON.stringify(context)}`);
-		},
-		willSendResponse (context) {
-			console.debug(`willSendResponse: ${JSON.stringify(context)}`);
-		},
-		validationDidStart (context) {
-			console.debug(`validationDidStart: ${JSON.stringify(context)}`);
-		},
-	} ],
 	resolvers,
 	typeDefs,
 });

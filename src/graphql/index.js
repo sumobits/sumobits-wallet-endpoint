@@ -5,40 +5,39 @@ import { gql } from 'apollo-server';
 import merge from 'lodash/merge';
 
 import {
-	dataSource as userDataSource,
-	mutations as userMutations,
-	queries as userQueries,
-	resolvers as userResolvers,
-	typeDefs as userType,
-} from './user';
-
-
-import {
 	dataSource as transactionDataSource,
 	mutations as transactionMutations,
 	queries as transactionQueries,
 	resolvers as transactionResolvers,
-	typeDefs as transactionType,
+	typeDefs as transactionTypeDefs,
 } from './transaction';
 
+import {
+	dataSource as walletDataSource,
+	mutations as walletMuations,
+	queries as walletQueries,
+	resolvers as walletResolvers,
+	typeDefs as walletTypeDefs
+} from './wallet';
+
 export const dataSources = {
-	userDataSource,
+	walletDataSource,
 	transactionDataSource,
 };
 
-export const resolvers = merge(userResolvers, transactionResolvers);
+export const resolvers = merge(transactionResolvers, walletResolvers);
 
 export const typeDefs = gql`
-	${userType}
-	${transactionType}
+	${walletTypeDefs}
+	${transactionTypeDefs}
 
 	type Query {
-		${userQueries}
+		${walletQueries}
 		${transactionQueries}
 	}
 
 	type Mutation {
-		${userMutations}
+		${walletMuations}
 		${transactionMutations}
 	}
 `;
