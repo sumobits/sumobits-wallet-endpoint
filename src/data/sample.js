@@ -3,7 +3,7 @@
  * @format
  */
 
-const keys = [ {
+const Keys = [ {
 	private: `
 		-----BEGIN PGP PRIVATE KEY BLOCK-----
 		Version: GnuPG v2
@@ -125,8 +125,8 @@ export const Transactions = [ {
 export const Wallet = {
 	id: '4po0f70e-25q5-423b-9d2b-614d5b343c83',
 	userId: '85278381-bfa5-4aff-bee9-641a56eb9571',
-	passcode,
-	keys,
+	passcode: '5e3afbf1b7344544bb50a3e742ca2d7d',
+	keys: Keys,
 	lastOpened: undefined,
-	transactions: [],
+	transactions: Transactions,
 };

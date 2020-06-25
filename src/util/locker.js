@@ -49,6 +49,7 @@ class Locker  {
 		return crypto.generateKeyPairSync('rsa', {
 			modulusLength: 2048,
 			privateKeyEncoding: {
+				cipher: 'aes-256-cbc',
 				format: 'pem',
 				passphrase: passcode,
 				type: 'pkcs8',

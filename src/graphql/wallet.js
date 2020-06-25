@@ -3,8 +3,12 @@
  */
 import { DataSource } from 'apollo-datasource';
 import { RESTDataSource } from 'apollo-datasource-rest';
+import moment from 'moment';
 import Locker from '../util/locker';
-import { Wallet } from '../data/sample';
+import { 
+	Keys, 
+	Wallet 
+} from '../data/sample';
 
 class ApiDataSource extends RESTDataSource {
 	constructor () {
@@ -12,13 +16,17 @@ class ApiDataSource extends RESTDataSource {
 		this.baseURL = process.env.HOST_ENDPOINT || 'http://localhost:8888/';
 	}
 
-	createWallet = (userId, passcode, keys) => {
+	createWallet = async (userId, passcode, keys) => {
+		// TODO implement me
+	}
+
+	getUserWallet = async userId => {
 		// TODO implement me
 	}
 }
 
 class DevDataSource extends DataSource {
-	createWallet = (userId, passcode) => {
+	createWallet = async (userId, passcode) => {
 		if (!userId || !passcode) {
 			return;
 		}
@@ -27,34 +35,45 @@ class DevDataSource extends DataSource {
 		const addresses = [];
 
 		for (let x = 0; x < 100; x++) {
-			addresses.push(Logger.generateUniqueId(true));
+			addresses.push(Locker.generateUniqueId(true));
 		}
 
 		const wallet = {
 			id: Locker.generateUniqueId(),
 			userId,
 			passcode,
-			lastOpen,
-			keys,
+			keys: {
+				private: keys.privateKey,
+				public: keys.publicKey,
+			},
 			addresses,
+			created: moment().format(),
+			lastOpen: undefined,
 		};
 
 		return wallet;
 	}
 
-	getUserWallet = id => {
+	getUserWallet = async userId => {
 		return Wallet;
 	};
 }
 
 export const typeDefs = `
+	type Keys {
+		private: String!
+		public: String!
+	}
+
     type Wallet {
 		id: String!
 		userId: String!
 		passcode: String!
+		created: String!
 		lastOpen: String
-		transactions: [Transaction]!
 		addresses: [String!]!
+		keys: Keys!
+		transactions: [Transaction!]
 	}
 `;
 
@@ -63,18 +82,21 @@ export const queries = `
 `;
 
 export const mutations = `
-	createWallet(passcode: String! ): Wallet
+	createWallet(passcode: String!, userId: String! ): Wallet
 `;
 
 export const resolvers = {
 	Query: {
 		getUserWallet: async (src, { userId }, { dataSources }) => {
-			return dataSources.walletDataSource.getUserWallet(userId);
+			return await dataSources.walletDataSource.getUserWallet(userId) || {};
 		},
 	},
 	Mutation: {
-		createWallet: async (src, { passcode }, { dataSources }) => {
-			return dataSources.walletDataSource.creatWallet(passcode);
+		createWallet: async (src, { 
+			passcode, 
+			userId
+		}, { dataSources }) => {
+			return await dataSources.walletDataSource.createWallet(passcode, userId) || {};
 		}
 	},
 };
