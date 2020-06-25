@@ -96,7 +96,7 @@ export const resolvers = {
 			passcode, 
 			userId
 		}, { dataSources }) => {
-			return await dataSources.walletDataSource.createWallet(passcode, userId) || {};
+			return await dataSources.walletDataSource.createWallet(userId, passcode) || {};
 		}
 	},
 };
